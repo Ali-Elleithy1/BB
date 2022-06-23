@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.bb.login.LoginFragment"
+        android:label="@string/login_label"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_donorHomeFragment"
+            app:destination="@id/donorHomeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_patientHomeFragment"
+            app:destination="@id/patientHomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.bb.register.RegistrationFragment"
+        android:label="@string/registration_label"
+        tools:layout="@layout/fragment_registration">
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/donorHomeFragment"
+        android:name="com.example.bb.donor.home.DonorHomeFragment"
+        android:label="@string/home_label"
+        tools:layout="@layout/fragment_donor_home">
+        <action
+            android:id="@+id/action_donorHomeFragment_to_charityFragment"
+            app:destination="@id/charityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/patientHomeFragment"
+        android:name="com.example.bb.patient.PatientHomeFragment"
+        android:label="@string/home_label"
+        tools:layout="@layout/fragment_patient_home" />
+    <fragment
+        android:id="@+id/charityFragment"
+        android:name="com.example.bb.donor.charity.CharityFragment"
+        android:label="@string/charity_details_label"
+        tools:layout="@layout/fragment_charity">
+        <action
+            android:id="@+id/action_charityFragment_to_caseFragment"
+            app:destination="@id/caseFragment" />
+        <argument
+            android:name="charityId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/caseFragment"
+        android:name="com.example.bb.donor.cases.CaseFragment"
+        android:label="@string/case_details_label"
+        tools:layout="@layout/fragment_case">
+        <argument
+            android:name="caseId"
+            app:argType="long" />
+    </fragment>
+</navigation>
