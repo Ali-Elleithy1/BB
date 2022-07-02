@@ -40,77 +40,50 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.85" />
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/textField"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:hint="@string/email_label"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/guideline16"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/guideline15"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/guideline14">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-        <TextView
-            android:id="@+id/textView10"
-            style="@style/label_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email_label"
-            app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toTopOf="@+id/guideline16" />
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/l_email_edit"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:ems="10"
-            android:hint="@string/email_hint"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
+            android:hint="@string/email_label"
             app:layout_constraintEnd_toStartOf="@+id/guideline15"
             app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toBottomOf="@+id/textView10"
-            tools:ignore="DuplicateSpeakableTextCheck"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toTopOf="@+id/guideline16"
+            app:startIconDrawable="@drawable/ic_email">
 
-        <TextView
-            android:id="@+id/textView11"
-            style="@style/label_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/password_label"
-            app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toBottomOf="@+id/l_email_edit" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <EditText
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/l_password_edit"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:ems="10"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/password_label"
             app:layout_constraintEnd_toStartOf="@+id/guideline15"
             app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toBottomOf="@+id/textView11"
-            tools:ignore="DuplicateSpeakableTextCheck"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/l_email_edit"
+            app:startIconDrawable="@drawable/ic_key"
+            app:startIconContentDescription="@string/content_description_end_icon"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
+            android:layout_marginTop="32dp"
             android:text="@string/login_button"
             app:layout_constraintEnd_toStartOf="@+id/guideline15"
             app:layout_constraintStart_toStartOf="@+id/guideline14"
@@ -121,21 +94,20 @@
             android:id="@+id/forgotPass_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/forgot_password_text"
             app:layout_constraintEnd_toStartOf="@+id/guideline15"
-            app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toBottomOf="@+id/login_button" />
+            app:layout_constraintTop_toBottomOf="@+id/l_password_edit" />
 
         <TextView
             android:id="@+id/signUp_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/sign_up_text"
             app:layout_constraintEnd_toStartOf="@+id/guideline15"
             app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toBottomOf="@+id/forgotPass_text" />
+            app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
