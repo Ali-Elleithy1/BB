@@ -38,7 +38,7 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener { view ->
             //viewModel.clearCharities()
             //viewModel.onInsertCharity()
-            viewModel.onLogin(binding.lEmailEdit.text.toString(),binding.lPasswordEdit.text.toString())
+            viewModel.onLogin(binding.lEmailEdit.editText?.text.toString(),binding.lPasswordEdit.editText?.text.toString())
         }
 
         viewModel.charities.observe(this.viewLifecycleOwner, Observer {
