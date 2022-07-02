@@ -13,4 +13,4 @@ data class PatientAndCase(
         entity = Case::class
     )
     var case: Case = Case(0L,"","",0.0,0.0,0.0,"","","",0L,0L)
-    )
+)
