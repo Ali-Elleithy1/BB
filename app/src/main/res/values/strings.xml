@@ -59,4 +59,5 @@
     <string name="logout_label">Logout</string>
     <string name="language_label">Language</string>
     <string name="arabic_label">Arabic</string>
+    <string name="content_description_end_icon">Password Icon</string>
 </resources>
