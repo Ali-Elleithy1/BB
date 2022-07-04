@@ -3,8 +3,6 @@ package com.example.bb
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -15,7 +13,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bb.databinding.ActivityMainBinding
-import com.google.android.material.navigation.NavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,24 +31,38 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
         NavigationUI.setupWithNavController(binding.navView,navController)
 
+        val navHost = R.id.myNavHostFragment
 
-        fun onNavigationItemSelected(item: MenuItem): Boolean {
-            when (item.itemId) {
+        binding.navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.aboutFragment -> {
+                    this.findNavController(navHost).navigate(R.id.aboutFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.myDonationsFragment -> {
+                    Log.i("MainActivity", "My Donations clicked!")
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
                 R.id.logout -> {
-                    Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show()
-                    Log.i("MainActivity", "Sign out clicked!")
+                    this.findNavController(navHost).navigate(R.id.loginFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
                 }
                 R.id.arabic -> {
-                    Toast.makeText(this, "arabic", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
                 }
+                else -> false
             }
-
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            return true
+            drawerLayout.refreshDrawableState()
+            drawerLayout.invalidate()
+            true
         }
 
         navController.addOnDestinationChangedListener{ nc: NavController, nd: NavDestination, args:Bundle? ->
-             navMenu = binding.navView.menu
+            navMenu = binding.navView.menu
 
             if(nd.id == nc.graph.startDestinationId){
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -63,6 +74,8 @@ class MainActivity : AppCompatActivity() {
                 //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
             }
+            drawerLayout.refreshDrawableState()
+            drawerLayout.invalidate()
         }
     }
 
