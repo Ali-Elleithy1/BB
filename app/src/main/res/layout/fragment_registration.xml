@@ -17,6 +17,7 @@
             android:id="@+id/registration_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/fname_container"
             tools:context="registration.RegistrationFragment">
 
             <androidx.constraintlayout.widget.Guideline
@@ -48,7 +49,7 @@
                 app:layout_constraintGuide_percent="0.90" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/r_password_edit"
+                android:id="@+id/r_password_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -56,13 +57,15 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/password_label"
                 app:endIconMode="password_toggle"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/r_email_edit"
+                app:layout_constraintTop_toBottomOf="@+id/r_email_container"
                 app:startIconContentDescription="@string/content_description_end_icon"
                 app:startIconDrawable="@drawable/ic_key">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/r_password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -70,7 +73,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/c_password_edit"
+                android:id="@+id/c_password_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -78,13 +81,15 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/confirm_password_label"
                 app:endIconMode="password_toggle"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/r_password_edit"
+                app:layout_constraintTop_toBottomOf="@+id/r_password_container"
                 app:startIconContentDescription="@string/content_description_end_icon"
                 app:startIconDrawable="@drawable/ic_key">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/c_password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -92,57 +97,63 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/fname_edit"
+                android:id="@+id/fname_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/fname_label"
+                app:helperTextTextColor="#B80000"
+                app:layout_constraintBaseline_toBaselineOf="@+id/lname_container"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_center"
-                app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/mobile_edit">
+                app:layout_constraintStart_toStartOf="@+id/guideline11">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fname_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lname_edit"
+                android:id="@+id/lname_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/lname_label"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/vertical_center"
-                app:layout_constraintTop_toBottomOf="@+id/mobile_edit">
+                app:layout_constraintTop_toBottomOf="@+id/mobile_container">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lname_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/r_email_edit"
+                android:id="@+id/r_email_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/email_label"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/fname_edit"
+                app:layout_constraintTop_toBottomOf="@+id/barrier2"
                 app:startIconDrawable="@drawable/ic_email">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/r_email_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -157,7 +168,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nationalId_edit"
+                android:id="@+id/nationalId_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -165,13 +176,18 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/national_id_label"
                 android:visibility="gone"
+                app:counterEnabled="true"
+                app:counterMaxLength="14"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/cases_dropdown">
+                app:layout_constraintTop_toBottomOf="@+id/barrier4">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nationalId_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -181,6 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/purpose_label"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_center"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
                 app:layout_constraintTop_toTopOf="@+id/guideline9">
@@ -202,6 +219,7 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/governorate_label"
                 android:visibility="gone"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/vertical_center"
                 app:layout_constraintTop_toTopOf="@+id/guideline9">
@@ -224,7 +242,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/age_edit"
+                android:id="@+id/age_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -232,13 +250,16 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/age_label"
                 android:visibility="gone"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_center"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/nationalId_edit">
+                app:layout_constraintTop_toBottomOf="@+id/nationalId_container">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/age_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -249,6 +270,7 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/case_label"
                 android:visibility="gone"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_center"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
                 app:layout_constraintTop_toBottomOf="@+id/guideline9">
@@ -268,6 +290,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/counrty_label"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/vertical_center"
                 app:layout_constraintTop_toTopOf="@+id/guideline9">
@@ -281,7 +304,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/mobile_edit"
+                android:id="@+id/mobile_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -289,14 +312,17 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/mobile_label"
+                app:helperTextTextColor="#B80000"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toEndOf="@+id/mobile_code_edit"
-                app:layout_constraintTop_toBottomOf="@+id/purpose_dropdown"
+                app:layout_constraintTop_toBottomOf="@+id/barrier3"
                 app:startIconDrawable="@drawable/ic_mobile">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mobile_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -308,7 +334,7 @@
                 android:layout_marginTop="16dp"
                 android:enabled="false"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/purpose_dropdown">
+                app:layout_constraintTop_toBottomOf="@+id/barrier3">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mobile_code_editAC"
@@ -316,6 +342,27 @@
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="fname_container,lname_container" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="purpose_dropdown,countries_dropdown" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="cases_dropdown,governorates_dropdown" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
