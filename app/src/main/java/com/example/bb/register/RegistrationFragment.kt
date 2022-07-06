@@ -1,20 +1,26 @@
 package com.example.bb.register
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.view.inputmethod.InputMethodManager
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.bb.R
 import com.example.bb.database.BBDatabase
 import com.example.bb.databinding.FragmentRegistrationBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class RegistrationFragment : Fragment() {
@@ -35,168 +41,339 @@ class RegistrationFragment : Fragment() {
         val viewModel = ViewModelProvider(this,viewModelFactory).get(RegistrationViewModel::class.java)
         binding.registrationViewModel = viewModel
         binding.lifecycleOwner = this
-        binding.purposesSpinner.adapter= viewModel.purposesAdapter
-        binding.governoratesSpinner.adapter = viewModel.governoratesAdapter
-        binding.casesSpinner.adapter = viewModel.casesAdapter
-        binding.countriesSpinner.adapter = viewModel.countriesAdapter
-        binding.mobileCodeSpinner.adapter = viewModel.mobileCodesAdapter
-        binding.mobileCodeSpinner.isEnabled = false
+
+        //Set exposed drop-down menu's adapter to the appropriate adapter in the view model
+        (binding.purposeDropdown.editText as? AutoCompleteTextView)?.setAdapter(viewModel.purposesAdapter)
+        (binding.countriesDropdown.editText as? AutoCompleteTextView)?.setAdapter(viewModel.countriesAdapter)
+        (binding.governoratesDropdown.editText as? AutoCompleteTextView)?.setAdapter(viewModel.governoratesAdapter)
+        (binding.casesDropdown.editText as? AutoCompleteTextView)?.setAdapter(viewModel.casesAdapter)
+
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(binding.registrationLayout)
         constraintSet.connect(
             R.id.register_button,
             ConstraintSet.TOP,
-            R.id.confirmPassword_edit,
+            R.id.c_password_container,
             ConstraintSet.BOTTOM,
             16
         )
         constraintSet.applyTo(binding.registrationLayout)
 
-        binding.countriesSpinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                binding.mobileCodeSpinner.setSelection(p2)
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
-        }
-
-        binding.purposesSpinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if(p0!!.selectedItem.equals("Donor"))
-                {
-                    //Patient Views
-                    binding.caseText.visibility = View.GONE
-                    binding.casesSpinner.visibility = View.GONE
-                    binding.governorateText.visibility = View.GONE
-                    binding.governoratesSpinner.visibility = View.GONE
-                    binding.nationalIdText.visibility = View.GONE
-                    binding.nationalIdEdit.visibility = View.GONE
-                    binding.ageText.visibility = View.GONE
-                    binding.ageEdit.visibility = View.GONE
-
-                    //Donor Views
-                    binding.fnameText.visibility = View.VISIBLE
-                    binding.fnameEdit.visibility = View.VISIBLE
-                    binding.lnameText.visibility = View.VISIBLE
-                    binding.lnameEdit.visibility = View.VISIBLE
-                    binding.mobileText.visibility = View.VISIBLE
-                    binding.mobileCodeSpinner.visibility = View.VISIBLE
-                    binding.rEmailText.visibility = View.VISIBLE
-                    binding.rEmailEdit.visibility = View.VISIBLE
-                    binding.rPasswordEdit.visibility = View.VISIBLE
-                    binding.mobileEdit.visibility= View.VISIBLE
-                    binding.passwordText.visibility = View.VISIBLE
-                    binding.rPasswordEdit.visibility = View.VISIBLE
-                    binding.cPasswordText.visibility = View.VISIBLE
-                    binding.confirmPasswordEdit.visibility = View.VISIBLE
-                    if(!viewModel.isButtonClicked) {
-                        binding.registerButton.text = "Register"
-                    }
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(binding.registrationLayout)
-                    constraintSet.connect(
-                        R.id.register_button,
-                        ConstraintSet.TOP,
-                        R.id.confirmPassword_edit,
-                        ConstraintSet.BOTTOM,
-                        16
-                    )
-                    constraintSet.applyTo(binding.registrationLayout)
-
-                }
-                else if(p0!!.selectedItem.equals("Patient"))
-                {
-                    //1st
-                    binding.fnameText.visibility = View.VISIBLE
-                    binding.fnameEdit.visibility = View.VISIBLE
-                    binding.lnameText.visibility = View.VISIBLE
-                    binding.lnameEdit.visibility = View.VISIBLE
-                    binding.mobileText.visibility = View.VISIBLE
-                    binding.mobileCodeSpinner.visibility = View.VISIBLE
-                    binding.rEmailText.visibility = View.VISIBLE
-                    binding.rEmailEdit.visibility = View.VISIBLE
-                    binding.rPasswordEdit.visibility = View.VISIBLE
-                    binding.mobileEdit.visibility= View.VISIBLE
-                    binding.passwordText.visibility = View.VISIBLE
-                    binding.rPasswordEdit.visibility = View.VISIBLE
-                    binding.cPasswordText.visibility = View.VISIBLE
-                    binding.confirmPasswordEdit.visibility = View.VISIBLE
-                    if(!viewModel.isButtonClicked) {
-                        binding.registerButton.text = "Continue"
-                    }
-
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        }
-
-
-        binding.registerButton.setOnClickListener { view ->
-            //viewModel.isButtonClicked = true
-            if(binding.registerButton.text.equals("Continue"))
+        //Purpose DropDown Validation
+        binding.purposeDropdownAC.setOnFocusChangeListener { _, focused ->
+            if(!focused)
             {
-                binding.fnameText.visibility = View.GONE
-                binding.fnameEdit.visibility = View.GONE
-                binding.lnameText.visibility = View.GONE
-                binding.lnameEdit.visibility = View.GONE
-                binding.mobileText.visibility = View.GONE
-                binding.mobileCodeSpinner.visibility = View.GONE
-                binding.rEmailEdit.visibility = View.GONE
-                binding.rEmailText.visibility = View.GONE
-                binding.rPasswordEdit.visibility = View.GONE
-                binding.mobileEdit.visibility= View.GONE
-                binding.passwordText.visibility = View.GONE
-                binding.rPasswordEdit.visibility = View.GONE
-                binding.cPasswordText.visibility = View.GONE
-                binding.confirmPasswordEdit.visibility = View.GONE
+                if(!viewModel.validateDropDown(binding.purposeDropdownAC.text.toString()).successful)
+                {
+                    viewModel.setIsPurposeValid(false)
+                    binding.purposeDropdown.error = viewModel.validateDropDown(binding.purposeDropdownAC.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsPurposeValid(true)
+                    binding.purposeDropdown.error = null
+                }
+            }
+        }
 
-                //2nd
-                binding.caseText.visibility = View.VISIBLE
-                binding.casesSpinner.visibility = View.VISIBLE
-                binding.governorateText.visibility = View.VISIBLE
-                binding.governoratesSpinner.visibility = View.VISIBLE
-                binding.nationalIdText.visibility = View.VISIBLE
-                binding.nationalIdEdit.visibility = View.VISIBLE
-                binding.ageText.visibility = View.VISIBLE
-                binding.ageEdit.visibility = View.VISIBLE
+        //Country DropDown Validation
+        binding.countriesDropdownAC.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateDropDown(binding.countriesDropdownAC.text.toString()).successful)
+                {
+                    viewModel.setIsCountryValid(false)
+                    binding.countriesDropdown.error = viewModel.validateDropDown(binding.countriesDropdownAC.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsCountryValid(true)
+                    binding.countriesDropdown.error = null
+                }
+            }
+        }
 
-                binding.registerButton.text = "Register"
+        //First Name Validation
+        binding.fnameEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateName(binding.fnameEditText.text.toString()).successful)
+                {
+                    viewModel.setIsFNameValid(false)
+                    binding.fnameContainer.error = viewModel.validateName(binding.fnameEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsFNameValid(true)
+                    binding.fnameContainer.error = null
+                }
+            }
+        }
 
+        //Last Name Validation
+        binding.lnameEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateName(binding.lnameEditText.text.toString()).successful)
+                {
+                    viewModel.setIsLNameValid(false)
+                    binding.lnameContainer.error = viewModel.validateName(binding.lnameEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsLNameValid(true)
+                    binding.lnameContainer.error = null
+                }
+            }
+        }
+
+        //Email Validation
+        binding.rEmailEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateEmail(binding.rEmailEditText.text.toString()).successful)
+                {
+                    viewModel.setIsEmailValid(false)
+                    binding.rEmailContainer.error = viewModel.validateEmail(binding.rEmailEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsEmailValid(true)
+                    binding.rEmailContainer.error = null
+                }
+            }
+        }
+
+        //Password Validation
+        binding.rPasswordEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validatePassword(binding.rPasswordEditText.text.toString()).successful)
+                {
+                    viewModel.setIsPasswordValid(false)
+                    binding.rPasswordContainer.error = viewModel.validatePassword(binding.rPasswordEditText.text.toString()).errorMessage
+                    //binding.rPasswordContainer.helperText = viewModel.validatePassword(binding.rPasswordEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsPasswordValid(true)
+                    binding.rPasswordContainer.error = null
+                }
+
+                if(!viewModel.validateConfirmPassword(binding.rPasswordEditText.text.toString(),binding.cPasswordEditText.text.toString()).successful)
+                {
+                    viewModel.setIsConfirmPasswordValid(false)
+                    binding.cPasswordContainer.error = viewModel.validateConfirmPassword(binding.rPasswordEditText.text.toString(),binding.cPasswordEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsConfirmPasswordValid(true)
+                    binding.cPasswordContainer.error = null
+                }
+            }
+        }
+
+        //Confirm Password Validation
+        binding.cPasswordEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateConfirmPassword(binding.rPasswordEditText.text.toString(),binding.cPasswordEditText.text.toString()).successful)
+                {
+                    viewModel.setIsConfirmPasswordValid(false)
+                    binding.cPasswordContainer.error = viewModel.validateConfirmPassword(binding.rPasswordEditText.text.toString(),binding.cPasswordEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsConfirmPasswordValid(true)
+                    binding.cPasswordContainer.error = null
+                }
+            }
+        }
+
+        //Mobile Validation
+        binding.mobileEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validatePhoneNumber(binding.mobileEditText.text.toString()).successful)
+                {
+                    viewModel.setIsMobileValid(false)
+                    binding.mobileContainer.error = viewModel.validatePhoneNumber(binding.mobileEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsMobileValid(true)
+                    binding.mobileContainer.error = null
+                }
+            }
+        }
+
+        //Case DropDown Validation
+        binding.casesDropdownAC.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateDropDown(binding.casesDropdownAC.text.toString()).successful)
+                {
+                    viewModel.setIsCaseValid(false)
+                    binding.casesDropdown.error = viewModel.validateDropDown(binding.casesDropdownAC.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsCaseValid(true)
+                    binding.casesDropdown.error = null
+                }
+            }
+        }
+
+        //Governorate DropDown Validation
+        binding.governorateDropdownAC.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateDropDown(binding.governorateDropdownAC.text.toString()).successful)
+                {
+                    viewModel.setIsGovernorateValid(false)
+                    binding.governoratesDropdown.error = viewModel.validateDropDown(binding.governorateDropdownAC.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsGovernorateValid(true)
+                    binding.governoratesDropdown.error = null
+                }
+            }
+        }
+
+        //NationalID Validation
+        binding.nationalIdEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateNationalId(binding.nationalIdEditText.text.toString()).successful)
+                {
+                    viewModel.setIsNatIdValid(false)
+                    binding.nationalIdContainer.error = viewModel.validateNationalId(binding.nationalIdEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsNatIdValid(true)
+                    binding.nationalIdContainer.error = null
+                }
+            }
+        }
+
+        //Age Validation
+        binding.ageEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                if(!viewModel.validateAge(binding.ageEditText.text.toString()).successful)
+                {
+                    viewModel.setIsAgeValid(false)
+                    binding.ageContainer.error = viewModel.validateAge(binding.ageEditText.text.toString()).errorMessage
+                }
+                else
+                {
+                    viewModel.setIsAgeValid(true)
+                    binding.ageContainer.error = null
+                }
+            }
+        }
+
+        binding.countriesDropdownAC.addTextChangedListener {
+            binding.mobileCodeEditAC.setText(viewModel.getCode(binding.countriesDropdownAC.text.toString()))
+        }
+
+        binding.purposeDropdownAC.addTextChangedListener {
+            if(it.contentEquals("Patient"))
+            {
+                //1st
+                setVisibility(binding)
+
+                if(!viewModel.isButtonClicked) {
+                    binding.registerButton.text = "Continue"
+                }
+            }
+            else if(it.contentEquals("Donor"))
+            {
+                setVisibility(binding)
+
+                if(!viewModel.isButtonClicked) {
+                    binding.registerButton.text = "Register"
+                }
                 val constraintSet = ConstraintSet()
                 constraintSet.clone(binding.registrationLayout)
                 constraintSet.connect(
                     R.id.register_button,
                     ConstraintSet.TOP,
-                    R.id.age_edit,
+                    R.id.c_password_container,
                     ConstraintSet.BOTTOM,
                     16
                 )
                 constraintSet.applyTo(binding.registrationLayout)
             }
-            else
+        }
+
+
+        binding.registerButton.setOnClickListener { view ->
+
+            hideSoftKeyboard(context as Activity, view)
+            clearFocus(binding)
+
+            if(binding.registerButton.text.equals("Continue"))
             {
-                if(binding.purposesSpinner.selectedItem.equals("Patient"))
+                if(!viewModel.isFirstStepFormValid(viewModel.getIsPurposeValid(), viewModel.getIsCountryValid(), viewModel.getIsMobileValid(), viewModel.getIsFNameValid(),
+                    viewModel.getIsLNameValid(),viewModel.getIsEmailValid(),viewModel.getIsPasswordValid(),viewModel.getIsConfirmPasswordValid()))
                 {
-                    viewModel.setPurpose(0)
-                    viewModel.onRegister(binding.fnameEdit.text.toString(),binding.lnameEdit.text.toString(),binding.rEmailEdit.text.toString(),binding.mobileEdit.text.toString(),
-                        binding.rPasswordEdit.text.toString(),binding.governoratesSpinner.selectedItem.toString(),binding.casesSpinner.selectedItem.toString(),binding.ageEdit.text.toString().toInt(),binding.nationalIdEdit.text.toString(),0)
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content),"Please, fill all fields properly.",Snackbar.LENGTH_LONG).show()
+                    //Toast.makeText(context,"Please fill all fields correctly.",Toast.LENGTH_LONG).show()
                 }
                 else
                 {
-                    viewModel.setPurpose(1)
-                    viewModel.onRegister(binding.fnameEdit.text.toString(),binding.lnameEdit.text.toString(),binding.rEmailEdit.text.toString(),binding.mobileEdit.text.toString(),
-                        binding.rPasswordEdit.text.toString(),binding.governoratesSpinner.selectedItem.toString(),binding.casesSpinner.selectedItem.toString(),0,binding.nationalIdEdit.text.toString(),1)
+                    secondStepInRegistration(binding)
                 }
-                //
+            }
+            else
+            {
+                if (binding.purposeDropdownAC.text.toString() == "Patient") {
+                    if(!viewModel.isSecondStepFormValid(viewModel.getIsGovernorateValid(), viewModel.getIsCaseValid(), viewModel.getIsNatIdValid(), viewModel.getIsAgeValid()))
+                    {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),"Please, fill all fields properly.",Snackbar.LENGTH_LONG).show()
+                        //Toast.makeText(context,"Please fill all fields correctly.",Toast.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        viewModel.onRegister(
+                            binding.fnameEditText.text.toString(),
+                            binding.lnameEditText.text.toString(),
+                            binding.rEmailEditText.text.toString(),
+                            binding.mobileEditText.text.toString(),
+                            binding.rPasswordEditText.text.toString(),
+                            binding.governorateDropdownAC.text.toString(),
+                            binding.casesDropdownAC.text.toString(),
+                            binding.ageEditText.text.toString(),
+                            binding.nationalIdEditText.text.toString(),
+                            0
+                        )
+                    }
+                } else {
+                    if(!viewModel.isFirstStepFormValid(viewModel.getIsPurposeValid(), viewModel.getIsCountryValid(), viewModel.getIsMobileValid(), viewModel.getIsFNameValid(),
+                            viewModel.getIsLNameValid(),viewModel.getIsEmailValid(),viewModel.getIsPasswordValid(),viewModel.getIsConfirmPasswordValid()))
+                    {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),"Please, fill all fields properly.",Snackbar.LENGTH_LONG).show()
+                        //Toast.makeText(context,"Please fill all fields correctly.",Toast.LENGTH_LONG).show()
+                    }
+                    else {
+                        viewModel.onRegister(
+                            binding.fnameEditText.text.toString(),
+                            binding.lnameEditText.text.toString(),
+                            binding.rEmailEditText.text.toString(),
+                            binding.mobileEditText.text.toString(),
+                            binding.rPasswordEditText.text.toString(),
+                            binding.governorateDropdownAC.text.toString(),
+                            binding.casesDropdownAC.text.toString(),
+                            "",
+                            binding.nationalIdEditText.text.toString(),
+                            1
+                        )
+                    }
+                }
             }
         }
 
@@ -206,56 +383,77 @@ class RegistrationFragment : Fragment() {
         })
         return binding.root
     }
-    fun setVisibility(purpose:String, binding: FragmentRegistrationBinding)
+
+    private fun clearFocus(binding: FragmentRegistrationBinding) {
+        binding.purposeDropdown.clearFocus()
+        binding.countriesDropdown.clearFocus()
+        binding.mobileContainer.clearFocus()
+        binding.fnameContainer.clearFocus()
+        binding.lnameContainer.clearFocus()
+        binding.rEmailContainer.clearFocus()
+        binding.rPasswordContainer.clearFocus()
+        binding.cPasswordContainer.clearFocus()
+        binding.governoratesDropdown.clearFocus()
+        binding.casesDropdown.clearFocus()
+        binding.nationalIdContainer.clearFocus()
+        binding.ageContainer.clearFocus()
+        binding.registerButton.requestFocus()
+    }
+
+
+    private fun secondStepInRegistration(binding: FragmentRegistrationBinding)
     {
-        if(binding.purposesSpinner.selectedItem.equals("Donor"))
-        {
-            //Patient Views
-            binding.caseText.visibility = View.GONE
-            binding.casesSpinner.visibility = View.GONE
-            binding.governorateText.visibility = View.GONE
-            binding.governoratesSpinner.visibility = View.GONE
-            binding.nationalIdText.visibility = View.GONE
-            binding.nationalIdEdit.visibility = View.GONE
-            binding.ageText.visibility = View.GONE
-            binding.ageEdit.visibility = View.GONE
+        binding.fnameContainer.visibility = View.GONE
+        binding.lnameContainer.visibility = View.GONE
+        binding.mobileCodeEdit.visibility = View.GONE
+        binding.rEmailContainer.visibility = View.GONE
+        binding.rPasswordContainer.visibility = View.GONE
+        binding.mobileContainer.visibility= View.GONE
+        binding.cPasswordContainer.visibility = View.GONE
+        binding.purposeDropdown.visibility = View.GONE
+        binding.countriesDropdown.visibility = View.GONE
 
-            //Donor Views
-            binding.fnameText.visibility = View.VISIBLE
-            binding.fnameEdit.visibility = View.VISIBLE
-            binding.lnameText.visibility = View.VISIBLE
-            binding.lnameEdit.visibility = View.VISIBLE
-            binding.mobileText.visibility = View.VISIBLE
-            binding.mobileCodeSpinner.visibility = View.VISIBLE
-            binding.rEmailText.visibility = View.VISIBLE
-            binding.rEmailEdit.visibility = View.VISIBLE
-            binding.rPasswordEdit.visibility = View.VISIBLE
-            binding.mobileEdit.visibility= View.VISIBLE
-            binding.passwordText.visibility = View.VISIBLE
-            binding.rPasswordEdit.visibility = View.VISIBLE
-            binding.cPasswordText.visibility = View.VISIBLE
-            binding.confirmPasswordEdit.visibility = View.VISIBLE
-            binding.registerButton.text = "Register"
+        //2nd
+        binding.casesDropdown.visibility = View.VISIBLE
+        binding.governoratesDropdown.visibility = View.VISIBLE
+        binding.nationalIdContainer.visibility = View.VISIBLE
+        binding.ageContainer.visibility = View.VISIBLE
 
-        }
-        else if(binding.purposesSpinner.selectedItem.equals("Patient"))
-        {
-            //1st
-            binding.fnameText.visibility = View.VISIBLE
-            binding.fnameEdit.visibility = View.VISIBLE
-            binding.lnameText.visibility = View.VISIBLE
-            binding.lnameEdit.visibility = View.VISIBLE
-            binding.mobileText.visibility = View.VISIBLE
-            binding.mobileCodeSpinner.visibility = View.VISIBLE
-            binding.rEmailText.visibility = View.VISIBLE
-            binding.rEmailEdit.visibility = View.VISIBLE
-            binding.rPasswordEdit.visibility = View.VISIBLE
-            binding.mobileEdit.visibility= View.VISIBLE
-            binding.passwordText.visibility = View.VISIBLE
-            binding.rPasswordEdit.visibility = View.VISIBLE
-            binding.cPasswordText.visibility = View.VISIBLE
-            binding.confirmPasswordEdit.visibility = View.VISIBLE
-            binding.registerButton.text = "Continue"
-        }
+        binding.registerButton.text = "Register"
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(binding.registrationLayout)
+        constraintSet.connect(
+            R.id.register_button,
+            ConstraintSet.TOP,
+            R.id.age_container,
+            ConstraintSet.BOTTOM,
+            16
+        )
+        constraintSet.applyTo(binding.registrationLayout)
+    }
+    private fun setVisibility(binding: FragmentRegistrationBinding)
+    {
+        //Patient Views
+        binding.casesDropdown.visibility = View.GONE
+        binding.governoratesDropdown.visibility = View.GONE
+        binding.nationalIdContainer.visibility = View.GONE
+        binding.ageContainer.visibility = View.GONE
+
+        //Donor Views
+        binding.fnameContainer.visibility = View.VISIBLE
+        binding.lnameContainer.visibility = View.VISIBLE
+        binding.mobileCodeEdit.visibility = View.VISIBLE
+        binding.rEmailContainer.visibility = View.VISIBLE
+        binding.rPasswordContainer.visibility = View.VISIBLE
+        binding.mobileContainer.visibility= View.VISIBLE
+        binding.cPasswordContainer.visibility = View.VISIBLE
+        binding.purposeDropdown.visibility = View.VISIBLE
+        binding.countriesDropdown.visibility = View.VISIBLE
+    }
+
+    private fun hideSoftKeyboard(activity: Activity, view: View) {
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
     }
 }
