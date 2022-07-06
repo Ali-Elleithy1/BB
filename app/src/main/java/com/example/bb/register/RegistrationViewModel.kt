@@ -88,6 +88,11 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
     private var isEmailValid = false
     private var isPasswordValid = false
     private var isConfirmPasswordValid = false
+    private var isGovernorateValid = false
+    private var isCaseValid = false
+    private var isNatIdValid = false
+    private var isAgeValid = false
+
 
     fun setIsPurposeValid(result: Boolean)
     {
@@ -152,6 +157,42 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
     fun getIsConfirmPasswordValid(): Boolean
     {
         return isConfirmPasswordValid
+    }
+
+    fun setIsGovernorateValid(result: Boolean)
+    {
+        isGovernorateValid = result
+    }
+    fun getIsGovernorateValid(): Boolean
+    {
+        return isGovernorateValid
+    }
+
+    fun setIsCaseValid(result: Boolean)
+    {
+        isCaseValid = result
+    }
+    fun getIsCaseValid(): Boolean
+    {
+        return isCaseValid
+    }
+
+    fun setIsNatIdValid(result: Boolean)
+    {
+        isNatIdValid = result
+    }
+    fun getIsNatIdValid(): Boolean
+    {
+        return isNatIdValid
+    }
+
+    fun setIsAgeValid(result: Boolean)
+    {
+        isAgeValid = result
+    }
+    fun getIsAgeValid(): Boolean
+    {
+        return isAgeValid
     }
 
 
@@ -320,6 +361,15 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
                              lName:Boolean,email: Boolean,password:Boolean,confirmPassword:Boolean): Boolean
     {
         if(purpose && country && mobile && fName && lName && email && password && confirmPassword)
+        {
+            return true
+        }
+        return false
+    }
+
+    fun isSecondStepFormValid(governorate:Boolean, case: Boolean,natId:Boolean,age:Boolean): Boolean
+    {
+        if(governorate && case && natId && age)
         {
             return true
         }
