@@ -1,15 +1,12 @@
 package com.example.bb.register
 
 import android.app.Application
-import android.telephony.PhoneNumberUtils
-import android.util.Log
 import android.util.Patterns
 import android.widget.ArrayAdapter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.bb.database.BBDatabase.Companion.getInstance
 import com.example.bb.database.BBDatabaseDao
 import com.example.bb.database.Case
 import com.example.bb.database.User
@@ -69,8 +66,6 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
                                                     "Qena", "Red Sea", "Sharqiya", "Sohag", "South Sinai", "Suez", "Tanta")
 
     private val cases: List<String> = listOf("Cancer", "General Surgery")
-
-    val mobileCodesAdapter = ArrayAdapter(application.applicationContext,android.R.layout.simple_spinner_item, mobileCodes)
 
     val countriesAdapter = ArrayAdapter(application.applicationContext, android.R.layout.simple_spinner_item, countries)
 
@@ -195,13 +190,6 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
         return isAgeValid
     }
 
-
-
-    fun setPurpose(purpose: Int)
-    {
-        _purpose = purpose
-    }
-
     fun getCode(country: String): String
     {
         for((index,item) in countries.withIndex())
@@ -209,7 +197,6 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
             if(country == item)
             {
                 return mobileCodes[index]
-                break
             }
         }
         return ""
@@ -221,7 +208,7 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
         {
             return ValidationResult(
                 successful = false,
-                errorMessage = "Name cannot be empty"
+                errorMessage = "Names cannot be empty"
             )
         }
         val containsOnlyLetters = name.all { it.isLetter() }
@@ -229,7 +216,7 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
         {
             return ValidationResult(
                 successful = false,
-                errorMessage = "Name cannot have any numbers"
+                errorMessage = "Names can only contain letters"
             )
         }
         return ValidationResult(successful = true)
@@ -374,18 +361,6 @@ class RegistrationViewModel(val database:BBDatabaseDao, application: Application
             return true
         }
         return false
-    }
-
-//    fun isFirstStepFormValid(purpose:String,purposeHelper:String,country: String,countryHelper:String,mobile:String,mobileHelper:String,fName:String,fNameHelper:String,
-//                             lName:String,lNameHelper:String,email: String,emailHelper:String,password:String,passwordHelper:String,confirmPassword:String,confirmPasswordHelper:String): Boolean
-//    {
-//        return (purposeHelper.isBlank() && countryHelper.isBlank() && fNameHelper.isBlank() && lNameHelper.isBlank() && mobileHelper.isBlank() && emailHelper.isBlank()
-//                    && passwordHelper.isBlank() && confirmPasswordHelper.isBlank())
-//    }
-
-    fun isSecondStepFormValid()
-    {
-
     }
 
     fun onRegister(fName: String, lName: String, email: String,mobile: String, password: String, governorate: String, case: String, age: String, natId: String, purpose: Int)
