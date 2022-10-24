@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">BB</string>
+    <string name="app_name" translatable="false">BB</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="about_text">This application is designed to help you get from your current location to your destination with ease. All you need to do is to provide the application with your pick-up location and your destination and the application will provide you with the best route.</string>
     <string name="about_title">About</string>
     <string name="help_title">Help</string>
@@ -58,7 +58,15 @@
     <string name="my_donations_label">My Donations</string>
     <string name="logout_label">Logout</string>
     <string name="language_label">Language</string>
-    <string name="arabic_label">Arabic</string>
+    <string name="arabic_label">عربى</string>
+    <string name="english_label">English</string>
     <string name="content_description_end_icon">Password Icon</string>
     <string name="required">Required</string>
+    <string name="case_number">Case Number</string>
+    <string name="max_amount_text">Max</string>
+    <string name="min_amount">Min</string>
+    <string name="egp_suffix">EGP</string>
+    <string name="donation_amount_text">Donation Amount</string>
+    <string name="success_text">Success</string>
+    <string name="close_dialog_button">Close</string>
 </resources>
