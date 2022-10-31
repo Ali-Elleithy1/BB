@@ -39,6 +39,10 @@
         <action
             android:id="@+id/action_donorHomeFragment_to_charityFragment"
             app:destination="@id/charityFragment" />
+        <action
+            android:id="@+id/action_donorHomeFragment_to_caseFragment"
+            app:destination="@id/caseFragment"
+            app:popUpTo="@id/donorHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/patientHomeFragment"
