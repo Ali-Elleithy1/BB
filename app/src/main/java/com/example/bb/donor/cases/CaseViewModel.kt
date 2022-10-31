@@ -18,6 +18,8 @@ class CaseViewModel (val database: BBDatabaseDao, application: Application): And
     val case: LiveData<Case>
         get() = _case
 
+    private var updatedCase = Case()
+
     private var _charity = MutableLiveData<Charity>()
     val charity: LiveData<Charity>
         get() = _charity
@@ -49,6 +51,25 @@ class CaseViewModel (val database: BBDatabaseDao, application: Application): And
         withContext(Dispatchers.IO)
         {
             _case.postValue(database.getCaseByCaseId(caseId))
+        }
+    }
+
+    fun updateCase(amountDonated: Double)
+    {
+        _case.value!!.donationsNeeded = _case.value!!.donationsNeeded - amountDonated
+        _case.value!!.donationsPaid += amountDonated
+        updatedCase = _case.value!!
+
+        viewModelScope.launch {
+            update()
+        }
+    }
+
+    private suspend fun update()
+    {
+        withContext(Dispatchers.IO)
+        {
+            database.updateCase(updatedCase)
         }
     }
 
