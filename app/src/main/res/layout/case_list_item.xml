@@ -15,7 +15,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#858585"
         android:onClick="@{() -> clickListener.onClick(case1)}">
 
         <TextView
