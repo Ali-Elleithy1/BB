@@ -1,8 +1,12 @@
 package com.example.bb
 
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -13,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bb.databinding.ActivityMainBinding
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +35,8 @@ class MainActivity : AppCompatActivity() {
             R.id.donorHomeFragment),drawerLayout)
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
         NavigationUI.setupWithNavController(binding.navView,navController)
+
+        val lang = LanguageManager(this)
 
         val navHost = R.id.myNavHostFragment
 
@@ -51,6 +58,18 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.arabic -> {
+                    if(it.title.equals(R.string.english_label))
+                    {
+                        lang.updateResource("en")
+                        recreate()
+                        it.setTitle(R.string.arabic_label)
+                    }
+                    else
+                    {
+                        lang.updateResource("ar")
+                        recreate()
+                        it.setTitle(R.string.english_label)
+                    }
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
@@ -66,11 +85,15 @@ class MainActivity : AppCompatActivity() {
 
             if(nd.id == nc.graph.startDestinationId){
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                navMenu.findItem(R.id.myDonationsFragment).isVisible = false
-                navMenu.findItem(R.id.logout).isVisible = false
+                navMenu.findItem(R.id.myDonationsFragment).isEnabled = false
+                navMenu.findItem(R.id.logout).isEnabled = false
+                //navMenu.findItem(R.id.myDonationsFragment).isVisible = false
+                //navMenu.findItem(R.id.logout).isVisible = false
             } else {
-                navMenu.findItem(R.id.myDonationsFragment).isVisible = true
-                navMenu.findItem(R.id.logout).isVisible = true
+                navMenu.findItem(R.id.myDonationsFragment).isEnabled = true
+                navMenu.findItem(R.id.logout).isEnabled = true
+//                navMenu.findItem(R.id.myDonationsFragment).isVisible = true
+//                navMenu.findItem(R.id.logout).isVisible = true
                 //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
             }
